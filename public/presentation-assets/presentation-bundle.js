@@ -343,60 +343,73 @@ function animateSlide4(){
   gsap.set('#m4-cb1, #m4-cb2, #m4-cb3, #m4-cb4, #m4-cb5', {opacity:0});
 
   // Right column
-  gsap.set('#s4-eq .word', {opacity:0});
+  gsap.set('.s4 .flow-step, .s4 .flow-arrow', {opacity:0, y:10});
   gsap.set('#s4-deleg', {opacity:0});
   gsap.set('#s4-deleg .word', {scale:3, opacity:0});
 
   const tl = gsap.timeline({paused:true});
+  const flowStep = (n) => document.querySelector(`.s4 .flow-step[data-step="${n}"]`);
+  const flowArrow = (n) => document.querySelectorAll('.s4 .flow-arrow')[n - 1];
 
   // STEP 1 — Title
   tl.addLabel("step1")
-    .to('.s4 .eyebrow', {opacity:1, y:0, duration:.4})
-    .to('.s4 h2', {opacity:1, y:0, duration:.4}, "-=0.2");
+    .to('.s4 .eyebrow', {opacity:1, y:0, duration:.25})
+    .to('.s4 h2', {opacity:1, y:0, duration:.3}, "-=0.12");
 
   // STEP 2 — Receptor + NT binds (callout 1)
   tl.addLabel("step2")
-    .to('#m4-receptor', {opacity:1, duration:.5}, "+=0.1")
-    .to('#m4-rec-label', {opacity:1, duration:.4}, "-=0.2")
-    .to('#m4-nt-far', {opacity:1, duration:.3})
-    .to('#m4-nt-far', {x:100, y:65, duration:.5, ease:"power2.in"})
+    .to('#m4-receptor', {opacity:1, duration:.22}, "+=0.01")
+    .to('#m4-rec-label', {opacity:1, duration:.16}, "-=0.1")
+    .to(flowStep(1), {opacity:1, y:0, duration:.18, ease:"power2.out"}, "-=0.12")
+    .to('#m4-nt-far', {opacity:1, duration:.12}, "-=0.04")
+    .to('#m4-nt-far', {x:100, y:65, duration:.25, ease:"power2.in"})
     .to('#m4-nt-far', {opacity:0, duration:.05})
-    .to('#m4-nt-bound', {opacity:1, duration:.2}, "<")
-    .to('#m4-cb1', {opacity:1, duration:.4}, "-=0.1");
+    .to('#m4-nt-bound', {opacity:1, duration:.1}, "<")
+    .to('#m4-cb1', {opacity:1, duration:.16}, "-=0.06");
 
   // STEP 3 — G-protein activated (callout 2)
   tl.addLabel("step3")
-    .to('#m4-gp-rec', {opacity:1, duration:.4}, "+=0.1")
-    .to('#m4-gp-label', {opacity:1, duration:.3}, "-=0.2")
-    .to('#m4-burst', {opacity:1, scale:1, duration:.5, ease:"back.out(1.6)"}, "-=0.1")
-    .to('#m4-cb2', {opacity:1, duration:.4}, "-=0.2");
+    .to(flowArrow(1), {opacity:1, duration:.14}, "+=0.01")
+    .to('#m4-gp-rec', {opacity:1, duration:.18}, "-=0.01")
+    .to(flowStep(2), {opacity:1, y:0, duration:.18, ease:"power2.out"}, "-=0.12")
+    .to('#m4-gp-label', {opacity:1, duration:.14}, "-=0.1")
+    .to('#m4-burst', {opacity:1, scale:1, duration:.22, ease:"back.out(1.6)"}, "-=0.04")
+    .to('#m4-cb2', {opacity:1, duration:.16}, "-=0.08");
 
-  // STEP 4 — Effector + α migrates + intracellular messengers (callout 3)
+  // STEP 4 — Effector target
   tl.addLabel("step4")
-    .to('#m4-effector', {opacity:1, duration:.4}, "+=0.1")
-    .to('#m4-alpha-travel', {opacity:1, duration:.2}, "+=0.1")
-    .to('#m4-alpha-travel', {x:90, duration:.7, ease:"power2.inOut"})
-    .to('#m4-arrow-eff', {opacity:1, duration:.4}, "-=0.4")
-    .to('#m4-msg-label, #m4-msg-label2', {opacity:1, duration:.3}, "-=0.2")
-    .to('.m4msg', {opacity:1, duration:.05, stagger:0.06})
-    .to('#m4-ions-label', {opacity:1, duration:.3}, "-=0.1")
-    .to('#m4-cb3', {opacity:1, duration:.4}, "-=0.2");
+    .to(flowArrow(2), {opacity:1, duration:.14}, "+=0.01")
+    .to('#m4-effector', {opacity:1, duration:.18}, "-=0.01")
+    .to(flowStep(3), {opacity:1, y:0, duration:.18, ease:"power2.out"}, "-=0.12")
+    .to('#m4-alpha-travel', {opacity:1, duration:.1}, "+=0.01")
+    .to('#m4-alpha-travel', {x:90, duration:.3, ease:"power2.inOut"})
+    .to('#m4-arrow-eff', {opacity:1, duration:.18}, "-=0.2");
 
-  // STEP 5 — Channel opens + ions flow (callouts 4 & 5)
+  // STEP 5 — Second messengers propagate the signal
   tl.addLabel("step5")
-    .to('#m4-channel', {opacity:1, duration:.4}, "+=0.1")
-    .to('#m4-arrow-chan', {opacity:1, duration:.4}, "-=0.2")
-    .to('#m4-cb4', {opacity:1, duration:.4})
-    .to('.m4ion', {opacity:1, duration:.05, stagger:0.05})
-    .to('#m4-ion-flow', {opacity:1, duration:.1})
-    .to('#m4-ion-flow', {y:100, duration:.6, ease:"power2.in"})
-    .to('#m4-cb5', {opacity:1, duration:.4}, "-=0.4");
+    .to(flowArrow(3), {opacity:1, duration:.14}, "+=0.01")
+    .to('#m4-msg-label, #m4-msg-label2', {opacity:1, duration:.14}, "-=0.08")
+    .to(flowStep(4), {opacity:1, y:0, duration:.18, ease:"power2.out"}, "-=0.08")
+    .to('.m4msg', {opacity:1, duration:.035, stagger:0.025}, "-=0.04")
+    .to('#m4-ions-label', {opacity:1, duration:.14}, "-=0.06")
+    .to('#m4-cb3', {opacity:1, duration:.16}, "-=0.08");
 
-  // STEP 6 — equation + delegation
+  // STEP 6 — Channel opens + ions flow (callouts 4 & 5)
   tl.addLabel("step6")
-    .to('#s4-eq .word', {opacity:1, duration:.05, stagger:0.06}, "+=0.1")
-    .to('#s4-deleg', {opacity:1, duration:.4}, "-=0.2")
-    .to('#s4-deleg .word', {scale:1, opacity:1, duration:.7, ease:"back.out(1.6)"}, "-=0.2");
+    .to(flowArrow(4), {opacity:1, duration:.14}, "+=0.01")
+    .to('#m4-channel', {opacity:1, duration:.18}, "-=0.01")
+    .to('#m4-arrow-chan', {opacity:1, duration:.18}, "-=0.1")
+    .to(flowStep(5), {opacity:1, y:0, duration:.18, ease:"power2.out"}, "-=0.1")
+    .to('#m4-cb4', {opacity:1, duration:.16}, "-=0.06")
+    .to('.m4ion', {opacity:1, duration:.035, stagger:0.025})
+    .to('#m4-ion-flow', {opacity:1, duration:.06})
+    .to('#m4-ion-flow', {y:100, duration:.32, ease:"power2.in"})
+    .to('#m4-cb5', {opacity:1, duration:.16}, "-=0.18");
+
+  // STEP 7 — delegation
+  tl.addLabel("step7")
+    .to('#s4-deleg', {opacity:1, duration:.18}, "+=0.01")
+    .to('#s4-deleg .word', {scale:1, opacity:1, duration:.28, ease:"back.out(1.6)"}, "-=0.08");
   return tl;
 }
 

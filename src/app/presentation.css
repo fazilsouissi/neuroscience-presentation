@@ -156,7 +156,10 @@
   }
   /* ====== SLIDE 4 ====== */
   .s4 .layout{display:grid; grid-template-columns: 1.1fr .9fr; gap:32px; flex:1; padding-top:18px}
-  .s4 .right{display:flex; flex-direction:column; gap:18px}
+  .s4 .right{display:flex; flex-direction:column; gap:14px}
+  .s4 .s4-flow{gap:10px; padding-top:0}
+  .s4 .s4-flow .flow-step{padding:11px 16px}
+  .s4 .s4-flow .flow-arrow{height:12px}
   .s4 .equation{
     background:var(--panel); border:1px solid var(--hair); border-radius:12px;
     padding:18px 20px; font-size:16px; color:var(--ink); line-height:1.7;
@@ -167,7 +170,7 @@
     background:linear-gradient(135deg, var(--green) 0%, var(--green-2) 100%);
     color:#f6f5f0; border-radius:14px; padding:28px;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; min-height:160px;
+    text-align:center; min-height:130px;
   }
   .s4 .delegation .lbl{font-size:11px; letter-spacing:.24em; text-transform:uppercase; opacity:.7}
   .s4 .delegation .word{font-size:46px; font-weight:700; letter-spacing:-0.02em; margin-top:6px}
