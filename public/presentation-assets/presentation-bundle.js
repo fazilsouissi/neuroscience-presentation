@@ -101,7 +101,7 @@ function animateSlide1(){
 
   // Build subtitle character spans
   const subEl = document.getElementById('s1-sub');
-  const subText = "G-proteins: not the signal, not the response — the coupling machinery in between.";
+  const subText = "G-proteins: not the signal, not the response - the coupling machinery in between.";
   subEl.innerHTML = subText.split('').map(c => `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
 
   const tl = gsap.timeline({paused:true});
@@ -153,13 +153,13 @@ function animateSlide2(){
   const flowStep = (n) => document.querySelector(`.s2 .flow-step[data-step="${n}"]`);
   const flowArrow = (n) => document.querySelectorAll('.s2 .flow-arrow')[n - 1];
 
-  // STEP 1 — title
+  // STEP 1 - title
   tl.addLabel("step1")
     .to('.s2 .eyebrow', {opacity:1, y:0, duration:.4})
     .to('.s2 h2', {opacity:1, y:0, duration:.5}, "-=0.2")
     .to('.s2 .synapse', {opacity:1, duration:.3}, "-=0.1");
 
-  // STEP 2 — presynaptic neuron + vesicles + callout
+  // STEP 2 - presynaptic neuron + vesicles + callout
   tl.addLabel("step2")
     .to('#pre-group', {opacity:1, duration:.7, ease:"power2.out"}, "+=0.1")
     .fromTo('#pre-group', {y:-30, scale:0.96, transformOrigin:"50% 0%"}, {y:0, scale:1, duration:.7, ease:"power2.out"}, "<")
@@ -168,7 +168,7 @@ function animateSlide2(){
     .to('#co-pre', {opacity:1, duration:.4}, "-=0.2")
     .to(flowStep(1), {opacity:1, y:0, duration:.35, ease:"power2.out"}, "-=0.15");
 
-  // STEP 3 — postsynaptic membrane + cleft + callouts
+  // STEP 3 - postsynaptic membrane + cleft + callouts
   tl.addLabel("step3")
     .to('#post-group', {opacity:1, duration:.5}, "+=0.1")
     .fromTo('#post-group', {y:30}, {y:0, duration:.5, ease:"power2.out"}, "<")
@@ -177,7 +177,7 @@ function animateSlide2(){
     .to('#co-cleft', {opacity:1, duration:.4}, "<")
     .to('#co-post', {opacity:1, duration:.4}, "+=0.05");
 
-  // STEP 4 — neurotransmitters release, bind, activate effectors
+  // STEP 4 - neurotransmitters release, bind, activate effectors
   tl.addLabel("step4")
     .to(flowArrow(1), {opacity:1, duration:.25}, "+=0.05")
     .to('.nt', {opacity:1, duration:.05, stagger:0.04}, "+=0.1")
@@ -185,21 +185,21 @@ function animateSlide2(){
     .to(flowStep(2), {opacity:1, y:0, duration:.35, ease:"power2.out"}, "-=0.2")
     .to('.nt', {attr:{cy:392}, duration:0.7, ease:"power2.in", stagger:0.03}, "-=0.05");
 
-  // STEP 5 — receptors bind the signal
+  // STEP 5 - receptors bind the signal
   tl.addLabel("step5")
     .to(flowArrow(2), {opacity:1, duration:.25}, "+=0.05")
     .to('.rcpt rect', {fill:'#a88fd0', duration:0.3, stagger:0.08}, "+=0.05")
     .to('.halo', {attr:{r:30}, duration:0.5, stagger:0.08, ease:"power2.out"}, "-=0.25")
     .to(flowStep(3), {opacity:1, y:0, duration:.35, ease:"power2.out"}, "-=0.25");
 
-  // STEP 6 — activated receptors recruit effectors
+  // STEP 6 - activated receptors recruit effectors
   tl.addLabel("step6")
     .to(flowArrow(3), {opacity:1, duration:.25}, "+=0.05")
     .to('.eff', {attr:{r:5}, duration:.4, stagger:0.08, ease:"back.out(1.6)"}, "+=0.05")
     .to('#co-rcpt', {opacity:1, duration:.4}, "-=0.2")
     .to(flowStep(4), {opacity:1, y:0, duration:.35, ease:"power2.out"}, "-=0.25");
 
-  // STEP 7 — the pathway produces a cellular response
+  // STEP 7 - the pathway produces a cellular response
   tl.addLabel("step7")
     .to(flowArrow(4), {opacity:1, duration:.25}, "+=0.05")
     .to('.eff', {attr:{r:7}, duration:.25, stagger:0.05, yoyo:true, repeat:1, ease:"power2.out"}, "+=0.05")
@@ -257,7 +257,7 @@ function animateSlide3(){
     .to('.s3 .eyebrow', {opacity:1, y:0, duration:.4})
     .to('.s3 h2', {opacity:1, y:0, duration:.4}, "-=0.2");
 
-  // STEP 2: Class I — Ionotropic
+  // STEP 2: Class I - Ionotropic
   tl.addLabel("step2")
     .to('#panel-iono', {opacity:1, y:0, duration:.5}, "+=0.1")
     .to('#iono-cb1', {opacity:1, duration:.4}, "+=0.2")
@@ -270,7 +270,7 @@ function animateSlide3(){
     .to('.oion', {opacity:1, duration:.05, stagger:0.08}, "-=0.2")
     .to('#iono-cb3', {opacity:1, duration:.4}, "-=0.1");
 
-  // STEP 3: Class II — Metabotropic
+  // STEP 3: Class II - Metabotropic
   tl.addLabel("step3")
     .to('#panel-meta', {opacity:1, y:0, duration:.5}, "+=0.1")
     .to('#meta-nt-far1, #meta-nt-far2', {opacity:1, duration:.4, stagger:0.1}, "+=0.1")
@@ -351,12 +351,12 @@ function animateSlide4(){
   const flowStep = (n) => document.querySelector(`.s4 .flow-step[data-step="${n}"]`);
   const flowArrow = (n) => document.querySelectorAll('.s4 .flow-arrow')[n - 1];
 
-  // STEP 1 — Title
+  // STEP 1 - Title
   tl.addLabel("step1")
     .to('.s4 .eyebrow', {opacity:1, y:0, duration:.25})
     .to('.s4 h2', {opacity:1, y:0, duration:.3}, "-=0.12");
 
-  // STEP 2 — Receptor + NT binds (callout 1)
+  // STEP 2 - Receptor + NT binds (callout 1)
   tl.addLabel("step2")
     .to('#m4-receptor', {opacity:1, duration:.22}, "+=0.01")
     .to('#m4-rec-label', {opacity:1, duration:.16}, "-=0.1")
@@ -367,7 +367,7 @@ function animateSlide4(){
     .to('#m4-nt-bound', {opacity:1, duration:.1}, "<")
     .to('#m4-cb1', {opacity:1, duration:.16}, "-=0.06");
 
-  // STEP 3 — G-protein activated (callout 2)
+  // STEP 3 - G-protein activated (callout 2)
   tl.addLabel("step3")
     .to(flowArrow(1), {opacity:1, duration:.14}, "+=0.01")
     .to('#m4-gp-rec', {opacity:1, duration:.18}, "-=0.01")
@@ -376,7 +376,7 @@ function animateSlide4(){
     .to('#m4-burst', {opacity:1, scale:1, duration:.22, ease:"back.out(1.6)"}, "-=0.04")
     .to('#m4-cb2', {opacity:1, duration:.16}, "-=0.08");
 
-  // STEP 4 — Effector target
+  // STEP 4 - Effector target
   tl.addLabel("step4")
     .to(flowArrow(2), {opacity:1, duration:.14}, "+=0.01")
     .to('#m4-effector', {opacity:1, duration:.18}, "-=0.01")
@@ -385,7 +385,7 @@ function animateSlide4(){
     .to('#m4-alpha-travel', {x:90, duration:.3, ease:"power2.inOut"})
     .to('#m4-arrow-eff', {opacity:1, duration:.18}, "-=0.2");
 
-  // STEP 5 — Second messengers propagate the signal
+  // STEP 5 - Second messengers propagate the signal
   tl.addLabel("step5")
     .to(flowArrow(3), {opacity:1, duration:.14}, "+=0.01")
     .to('#m4-msg-label, #m4-msg-label2', {opacity:1, duration:.14}, "-=0.08")
@@ -394,7 +394,7 @@ function animateSlide4(){
     .to('#m4-ions-label', {opacity:1, duration:.14}, "-=0.06")
     .to('#m4-cb3', {opacity:1, duration:.16}, "-=0.08");
 
-  // STEP 6 — Channel opens + ions flow (callouts 4 & 5)
+  // STEP 6 - Channel opens + ions flow (callouts 4 & 5)
   tl.addLabel("step6")
     .to(flowArrow(4), {opacity:1, duration:.14}, "+=0.01")
     .to('#m4-channel', {opacity:1, duration:.18}, "-=0.01")
@@ -406,7 +406,7 @@ function animateSlide4(){
     .to('#m4-ion-flow', {y:100, duration:.32, ease:"power2.in"})
     .to('#m4-cb5', {opacity:1, duration:.16}, "-=0.18");
 
-  // STEP 7 — delegation
+  // STEP 7 - delegation
   tl.addLabel("step7")
     .to('#s4-deleg', {opacity:1, duration:.18}, "+=0.01")
     .to('#s4-deleg .word', {scale:1, opacity:1, duration:.28, ease:"back.out(1.6)"}, "-=0.08");
@@ -583,7 +583,7 @@ function nextAction(){
     tl.pause(endOfCurrentStep);
     return;
   }
-  // Step is complete — advance
+  // Step is complete - advance
   if (idx + 1 < labels.length){
     slideStepIdx[cur] = idx + 1;
     const nextEnd = idx + 2 < labels.length ? tl.labels[labels[idx+2]] : tl.duration();
