@@ -137,16 +137,17 @@
   .flow-step .sub{color:var(--muted); font-size:13px; margin-top:2px}
   .flow-arrow{height:18px; display:grid; place-items:center; opacity:0}
   /* ====== SLIDE 3 ====== */
-  .s3 .panels{display:grid; grid-template-columns:1fr 1fr; gap:24px; flex:1; padding-top:12px}
+  .s3 .panels{display:grid; grid-template-columns:1fr 1fr; gap:24px; flex:1; padding-top:8px}
   .panel{
     background:var(--panel); border:1px solid var(--hair); border-radius:14px;
-    padding:18px 20px; display:flex; flex-direction:column; gap:10px; position:relative;
+    padding:20px 22px; display:flex; flex-direction:column; gap:12px; position:relative;
   }
-  .panel .ptype{font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--green-2); font-weight:600}
-  .panel h3{margin:0; font-size:26px; color:var(--green); font-weight:600}
+  .panel .ptype{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--green-2); font-weight:600}
+  .panel h3{margin:0; font-size:34px; line-height:1; color:var(--green); font-weight:600}
+  .s3 .panel svg{height:310px; min-height:310px}
   .panel .speed{
-    font-size:14px; color:var(--ink); font-weight:600;
-    padding:8px 12px; border-radius:6px; background:var(--green-soft); width:max-content;
+    font-size:15px; color:var(--ink); font-weight:600;
+    padding:9px 13px; border-radius:6px; background:var(--green-soft); width:max-content;
     opacity:0;
   }
   .insight{
@@ -223,22 +224,23 @@
   .s7 .why{display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; padding-top:16px}
   .why-card{
     background:var(--panel); border:1px solid var(--hair); border-radius:14px;
-    padding:20px; display:flex; flex-direction:column; gap:12px; opacity:0; min-height:260px;
+    padding:20px; display:flex; flex-direction:column; gap:12px;
+    justify-content:center; opacity:0; min-height:260px;
   }
   .why-card .label{font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--green-2); font-weight:700}
   .why-card .name{font-size:24px; font-weight:700; color:var(--green); letter-spacing:-0.01em}
   .why-card .desc{font-size:13px; color:var(--muted); line-height:1.45}
-  .why-card .visual{flex:1; min-height:110px; display:grid; place-items:center}
+  .why-card .visual{flex:0 0 auto; min-height:110px; display:grid; place-items:center}
   .why-card .counter{font-size:36px; font-weight:700; color:var(--green); font-variant-numeric:tabular-nums}
   .s7 .closing{
-    margin-top:22px; text-align:center; position:relative; padding:16px 0;
+    margin-top:22px; text-align:center; position:relative; padding:16px 0; min-height:132px;
   }
   .s7 .closing .echo{
     position:absolute; inset:0; display:grid; place-items:center;
     color:var(--green); font-size:22px; opacity:0; pointer-events:none;
-    font-style:italic; max-width:900px; margin:0 auto;
+    font-style:italic; max-width:900px; margin:0 auto; z-index:1;
   }
-  .s7 .closing .lines{position:relative; z-index:1; opacity:0}
+  .s7 .closing .lines{position:absolute; left:0; right:0; top:82px; z-index:2; opacity:0}
   .s7 .closing .lines .line{font-size:22px; color:var(--ink); line-height:1.45}
   .s7 .closing .lines .line + .line{margin-top:6px}
   .s7 .closing .lines em{color:var(--green); font-style:normal; font-weight:600}

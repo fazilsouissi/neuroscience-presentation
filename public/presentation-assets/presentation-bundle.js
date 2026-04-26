@@ -36,6 +36,12 @@ function showSlide(idx, dir = 1){
   isAnimating = true;
   const out = slides[cur];
   const inEl = slides[idx];
+  const isFirstVisit = !slideTimelines[idx];
+  if (isFirstVisit) {
+    runSlideAnimation(idx, false);
+  } else {
+    slideTimelines[idx].pause(slideTimelines[idx].time());
+  }
   inEl.classList.add('active');
 
   // transition
@@ -47,7 +53,7 @@ function showSlide(idx, dir = 1){
       isAnimating = false;
       document.getElementById('cur').textContent = idx + 1;
       try { window.parent && window.parent.postMessage({slideIndexChanged: idx}, '*'); } catch(e){}
-      runSlideAnimation(idx);
+      if (isFirstVisit) playSlideAnimation(idx);
     }
   });
 }
@@ -115,7 +121,7 @@ function animateSlide1(){
 function animateSlide2(){
   gsap.set('.s2 .eyebrow, .s2 h2', {opacity:0, y:-10});
   gsap.set('.s2 .synapse', {opacity:0});
-  gsap.set('#pre-group, #vesicles, #post-group, #cleft-label', {opacity:0});
+  gsap.set('#pre-group, #vesicles, #post-group, #receptors, #cleft-label, #cell-response', {opacity:0});
   gsap.set('#co-pre, #co-nt, #co-cleft, #co-post, #co-rcpt', {opacity:0});
   gsap.set('.halo', {attr:{r:0}});
   gsap.set('.eff', {attr:{r:0}});
@@ -144,6 +150,8 @@ function animateSlide2(){
   });
 
   const tl = gsap.timeline({paused:true});
+  const flowStep = (n) => document.querySelector(`.s2 .flow-step[data-step="${n}"]`);
+  const flowArrow = (n) => document.querySelectorAll('.s2 .flow-arrow')[n - 1];
 
   // STEP 1 — title
   tl.addLabel("step1")
@@ -157,34 +165,47 @@ function animateSlide2(){
     .fromTo('#pre-group', {y:-30, scale:0.96, transformOrigin:"50% 0%"}, {y:0, scale:1, duration:.7, ease:"power2.out"}, "<")
     .to('#vesicles', {opacity:1, duration:.4}, "-=0.3")
     .from('.ves', {scale:0, opacity:0, transformOrigin:"50% 50%", duration:.35, stagger:0.04, ease:"back.out(1.5)"}, "-=0.3")
-    .to('#co-pre', {opacity:1, duration:.4}, "-=0.2");
+    .to('#co-pre', {opacity:1, duration:.4}, "-=0.2")
+    .to(flowStep(1), {opacity:1, y:0, duration:.35, ease:"power2.out"}, "-=0.15");
 
   // STEP 3 — postsynaptic membrane + cleft + callouts
   tl.addLabel("step3")
     .to('#post-group', {opacity:1, duration:.5}, "+=0.1")
     .fromTo('#post-group', {y:30}, {y:0, duration:.5, ease:"power2.out"}, "<")
+    .to('#receptors', {opacity:1, duration:.4}, "-=0.3")
     .to('#cleft-label', {opacity:1, duration:.4}, "-=0.2")
     .to('#co-cleft', {opacity:1, duration:.4}, "<")
     .to('#co-post', {opacity:1, duration:.4}, "+=0.05");
 
   // STEP 4 — neurotransmitters release, bind, activate effectors
   tl.addLabel("step4")
+    .to(flowArrow(1), {opacity:1, duration:.25}, "+=0.05")
     .to('.nt', {opacity:1, duration:.05, stagger:0.04}, "+=0.1")
     .to('#co-nt', {opacity:1, duration:.4}, "<")
-    .to('.nt', {attr:{cy:392}, duration:0.7, ease:"power2.in", stagger:0.03}, "-=0.2")
-    .to('.rcpt rect', {fill:'#a88fd0', duration:0.3, stagger:0.08}, "-=0.2")
-    .to('.halo', {attr:{r:30}, duration:0.5, stagger:0.08, ease:"power2.out"}, "-=0.3")
-    .to('.eff', {attr:{r:5}, duration:.4, stagger:0.08, ease:"back.out(1.6)"}, "-=0.2")
-    .to('#co-rcpt', {opacity:1, duration:.4}, "-=0.2");
+    .to(flowStep(2), {opacity:1, y:0, duration:.35, ease:"power2.out"}, "-=0.2")
+    .to('.nt', {attr:{cy:392}, duration:0.7, ease:"power2.in", stagger:0.03}, "-=0.05");
 
-  // STEP 5 — flowchart abstraction
-  tl.addLabel("step5");
-  const stepsEl = document.querySelectorAll('.s2 .flow-step');
-  const arrowsEl = document.querySelectorAll('.s2 .flow-arrow');
-  stepsEl.forEach((s, i) => {
-    tl.to(s, {opacity:1, y:0, duration:.35, ease:"power2.out"}, i === 0 ? "+=0.1" : "-=0.05");
-    if (arrowsEl[i]) tl.to(arrowsEl[i], {opacity:1, duration:.25}, "-=0.15");
-  });
+  // STEP 5 — receptors bind the signal
+  tl.addLabel("step5")
+    .to(flowArrow(2), {opacity:1, duration:.25}, "+=0.05")
+    .to('.rcpt rect', {fill:'#a88fd0', duration:0.3, stagger:0.08}, "+=0.05")
+    .to('.halo', {attr:{r:30}, duration:0.5, stagger:0.08, ease:"power2.out"}, "-=0.25")
+    .to(flowStep(3), {opacity:1, y:0, duration:.35, ease:"power2.out"}, "-=0.25");
+
+  // STEP 6 — activated receptors recruit effectors
+  tl.addLabel("step6")
+    .to(flowArrow(3), {opacity:1, duration:.25}, "+=0.05")
+    .to('.eff', {attr:{r:5}, duration:.4, stagger:0.08, ease:"back.out(1.6)"}, "+=0.05")
+    .to('#co-rcpt', {opacity:1, duration:.4}, "-=0.2")
+    .to(flowStep(4), {opacity:1, y:0, duration:.35, ease:"power2.out"}, "-=0.25");
+
+  // STEP 7 — the pathway produces a cellular response
+  tl.addLabel("step7")
+    .to(flowArrow(4), {opacity:1, duration:.25}, "+=0.05")
+    .to('.eff', {attr:{r:7}, duration:.25, stagger:0.05, yoyo:true, repeat:1, ease:"power2.out"}, "+=0.05")
+    .to('#cell-response', {opacity:1, duration:.35, ease:"power2.out"}, "-=0.05")
+    .fromTo('.response-wave', {scale:0.82, transformOrigin:"50% 50%"}, {scale:1, duration:.45, stagger:0.08, ease:"power2.out"}, "<")
+    .to(flowStep(5), {opacity:1, y:0, duration:.35, ease:"power2.out"}, "-=0.15");
   return tl;
 }
 
@@ -465,7 +486,7 @@ function animateSlide7(){
   gsap.set('.why-card', {opacity:0, y:14});
   gsap.set('#div-p1, #div-p2, #div-p3', {strokeDashoffset:280});
   gsap.set('#mod-spike, #mod-curve', {strokeDashoffset:400});
-  gsap.set('#s7-echo', {opacity:0});
+  gsap.set('#s7-echo', {opacity:0, y:0});
   gsap.set('#s7-lines', {opacity:0, y:10});
 
   // amp dots: clear and respawn
@@ -511,10 +532,14 @@ function animateSlide7(){
     .to('#mod-spike', {strokeDashoffset:0, duration:.45, ease:"power2.out"}, "-=0.1")
     .to('#mod-curve', {strokeDashoffset:0, duration:1.4, ease:"power2.inOut"}, "-=0.2");
 
-  // STEP 5: closing
+  // STEP 5: centered question
   tl.addLabel("step5")
-    .to('#s7-echo', {opacity:0.18, duration:.7}, "+=0.2")
-    .to('#s7-lines', {opacity:1, y:0, duration:.6}, "-=0.4");
+    .to('#s7-echo', {opacity:1, y:0, duration:.35}, "+=0.1");
+
+  // STEP 6: question moves up, answer appears underneath
+  tl.addLabel("step6")
+    .to('#s7-echo', {y:-34, opacity:1, duration:.55, ease:"power2.out"}, "+=0.1")
+    .to('#s7-lines', {opacity:1, y:0, duration:.6, ease:"power2.out"}, "-=0.25");
   return tl;
 }
 
@@ -563,37 +588,36 @@ function prevAction(){
   const labels = slideSteps[cur];
   const idx = slideStepIdx[cur];
   if (idx > 0){
-    slideStepIdx[cur] = idx - 1;
-    // Snap back to end of previous step
-    const target = idx > 1 ? tl.labels[labels[idx-1]] : 0;
-    // If idx-1 is 0 (step1), go back to time 0 then play to step2
-    if (idx - 1 === 0){
-      tl.pause(0);
-      const endOfStep1 = labels.length > 1 ? labels[1] : tl.duration();
-      tl.tweenTo(endOfStep1, {duration: undefined, ease: "none"});
-    } else {
-      tl.pause(tl.labels[labels[idx-1]]);
-    }
+    const previousIdx = idx - 1;
+    slideStepIdx[cur] = previousIdx;
+    const previousEnd = previousIdx + 1 < labels.length ? tl.labels[labels[previousIdx + 1]] : tl.duration();
+    tl.pause(previousEnd);
   } else {
     showSlide(cur-1, -1);
   }
 }
 
-function runSlideAnimation(idx){
+function playSlideAnimation(idx){
+  const tl = slideTimelines[idx];
+  const labels = slideSteps[idx];
+  if (!tl || !labels?.length) return;
+
+  const endOfStep1 = labels.length > 1 ? tl.labels[labels[1]] : tl.duration();
+  tl.pause(0);
+  tl.tweenTo(endOfStep1, {duration: undefined, ease: "none"});
+}
+
+function runSlideAnimation(idx, autoplay = true){
   if (ionoIonInterval) { clearInterval(ionoIonInterval); ionoIonInterval = null; }
   if (!ANIMATORS[idx]) return;
+  if (slideTimelines[idx]) slideTimelines[idx].kill();
   const tl = ANIMATORS[idx]();
   if (tl && tl.labels){
     slideTimelines[idx] = tl;
     const labels = getStepLabels(tl);
     slideSteps[idx] = labels;
     slideStepIdx[idx] = 0;
-    // Auto-play step 1 on entry: tween from start to the END of step1 (= start of step2, or end of timeline)
-    if (labels.length){
-      const endOfStep1 = labels.length > 1 ? labels[1] : tl.duration();
-      tl.pause(0);
-      tl.tweenTo(endOfStep1, {duration: undefined, ease: "none"});
-    }
+    if (autoplay) playSlideAnimation(idx);
   }
 }
 
