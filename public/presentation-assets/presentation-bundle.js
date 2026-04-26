@@ -16,9 +16,9 @@
 function fitStage(){
   const c = document.getElementById('canvas');
   const W = window.innerWidth, H = window.innerHeight;
-  const s = Math.min(W/1280, H/800) * 0.96;
+  const s = Math.min(W/1280, H/720) * 0.96;
   const tx = (W - 1280 * s) / 2;
-  const ty = (H - 800 * s) / 2;
+  const ty = (H - 720 * s) / 2;
   c.style.transform = `translate(${tx}px, ${ty}px) scale(${s})`;
 }
 window.addEventListener('resize', fitStage);
@@ -639,4 +639,14 @@ slides[0].classList.add('active');
 runSlideAnimation(0);
 try { window.parent && window.parent.postMessage({slideIndexChanged: 0}, '*'); } catch(e){}
 
+  const fsBtn = document.getElementById("fullscreen");
+  if (fsBtn) {
+    fsBtn.addEventListener("click", () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.error("Error enabling fullscreen"));
+      } else {
+        document.exitFullscreen();
+      }
+    });
+  }
 })();
